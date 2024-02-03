@@ -1,22 +1,103 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select City</title>
+    <title>City Map</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
-    <h1>Select a City</h1>
-    <form method="post">
-        <label for="city">Choose a city:</label>
-        <select name="city" id="city">
-            {% for city in cities %}
-                <option value="{{ city }}">{{ city }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <input type="submit" value="Submit">
+    <h1>City Map</h1>
+    <!-- Add a form to enter the city name -->
+    <form id="cityForm">
+        <label for="cityName">Enter City Name:</label>
+        <input type="text" id="cityName" name="cityName">
+        <button type="button" onclick="searchCity()">Search</button>
     </form>
+    <!-- Display the map here -->
+    <div id="map" style="height: 400px; width: 400px"></div>
+
+ <!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Nominatim JavaScript -->
+<script src="https://nominatim.openstreetmap.org/search?format=json"></script>
+
+<script>
+    var map;
+    var selectedMarker;
+
+    function initMap() {
+        // Create a map centered at a default location (e.g., the center of the US)
+        map = L.map('map').setView([37.7749, -122.4194], 4); // You can adjust the default location and zoom level
+
+        // Add a tile layer (OpenStreetMap) to the map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add click event listener to the map
+        map.on('click', function (e) {
+            // Remove the previous selected marker if exists
+            if (selectedMarker) {
+                map.removeLayer(selectedMarker);
+            }
+
+            // Get the clicked coordinates
+            var clickedLat = e.latlng.lat;
+            var clickedLon = e.latlng.lng;
+
+            
+
+            // Use Nominatim to get city name based on the clicked coordinates
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${clickedLat}&lon=${clickedLon}`)
+                .then(response => response.json())
+                .then(data => {
+                    var cityName = data.address.city;
+                    if (!cityName) {
+                        cityName = data.address.town || data.address.village || data.address.hamlet || "Unknown";
+                    }
+// Create a marker at the clicked location
+selectedMarker = L.marker([clickedLat, clickedLon]).addTo(map).bindPopup('City: ' + cityName)
+                        .openPopup();
+                    
+                    // Store the selected coordinates for further processing
+                    var selectedCoordinates = { lat: clickedLat, lon: clickedLon };
+                    console.log('Selected Coordinates:', selectedCoordinates);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
+
+    function searchCity() {
+        // Get the city name from the input field
+        var cityName = document.getElementById("cityName").value;
+
+        // Use Nominatim to get coordinates for the city
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    // Create a map centered at the city coordinates
+                    map.setView([data[0].lat, data[0].lon], 12);
+
+                    // Add a marker for the city
+                    L.marker([data[0].lat, data[0].lon]).addTo(map)
+                        .bindPopup('City: ' + cityName)
+                        .openPopup();
+                } else {
+                    alert('City not found');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Initialize the map when the page is loaded
+    document.addEventListener('DOMContentLoaded', initMap);
+</script>
+
+
 </body>
 </html>
