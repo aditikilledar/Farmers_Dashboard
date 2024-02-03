@@ -1,3 +1,22 @@
+<!-- templates/index.html -->
 <!DOCTYPE html>
-
-<h1>helooo</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select City</title>
+</head>
+<body>
+    <h1>Select a City</h1>
+    <form method="post">
+        <label for="city">Choose a city:</label>
+        <select name="city" id="city">
+            {% for city in cities %}
+                <option value="{{ city }}">{{ city }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
