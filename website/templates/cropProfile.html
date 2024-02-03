@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Crop</title>
+</head>
+
+<body>
+    <h1>Ask ChatGPT</h1>
+    <form id="questionForm">
+        <label for="soil">Soil:</label><br>
+        <input type="text" id="soil" name="soil"><br>
+        <label for="season">Season:</label><br>
+        <input type="text" id="season" name="season"><br>
+        <label for="location">Location:</label><br>
+        <input type="text" id="location" name="location"><br>
+        <label for="weather">Weather:</label><br>
+        <input type="text" id="weather" name="weather"><br>
+        <button type="submit">Ask</button>
+    </form>
+    <div id="answer"></div>
+
+    <script>
+        document.getElementById('questionForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            var soil = formData.get('soil');
+            var season = formData.get('season');
+            var location = formData.get('location');
+            var weather = formData.get('weather');
+            var question = `Based on ${soil}, ${season}, ${location}, and ${weather}, what would be the optimal approach?`;
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ question: question })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('answer').innerText = data.answer;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+
+</html>
