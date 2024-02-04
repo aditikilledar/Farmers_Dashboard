@@ -68,16 +68,18 @@ def askchat():
 # @weather_dashboard.route('/', methods=['GET', 'POST'])
 @app.route('/', methods=['GET', 'POST'])
 def get_weather():
+
+    
+
     if request.method == 'POST':
+        
+
         city = request.form.get('city')
         if city:
             params = {'q': city, 'appid': API_KEY}
             response = requests.get(BASE_URL, params=params)
             weather_data = response.json()
 
-            username = request.cookies.get('username')
-            user = mongo.db.users.find_one({'username': username})
-            
             if response.status_code == 200:
                 # print(weather_data)
                 temperature = weather_data['main']['temp']
@@ -141,23 +143,36 @@ def signup():
 @app.route('/add_plant', methods=['GET', 'POST'])
 def add_plant():
     if request.method == 'POST':
-
         username = request.cookies.get('username')
+
+        # Increment 'crop_planted' in the database
         mongo.db.users.update_one({'username': username}, {'$inc': {'crop_planted': 1}}, upsert=True)
 
+        # Get the current crop_planted count from the database and update the cookie
+        user_data = mongo.db.users.find_one({'username': username})
+        crop_planted_count = user_data.get('crop_planted', 0)
+        response = redirect(url_for('get_weather'))
+        response.set_cookie('crop_planted', str(crop_planted_count))
 
-        return redirect(url_for('get_weather'))
+        return response
+
     return render_template('add_plant.html')
 
 @app.route('/harvest_crops', methods=['GET', 'POST'])
 def harvest_crops():
     if request.method == 'POST':
-
         username = request.cookies.get('username')
+
+        # Increment 'crop_harvested' in the database
         mongo.db.users.update_one({'username': username}, {'$inc': {'crop_harvested': 1}}, upsert=True)
 
+        # Get the current crop_harvested count from the database and update the cookie
+        user_data = mongo.db.users.find_one({'username': username})
+        crop_harvested_count = user_data.get('crop_harvested', 0)
+        response = redirect(url_for('get_weather'))
+        response.set_cookie('crop_harvested', str(crop_harvested_count))
 
-        return redirect(url_for('get_weather'))
+        return response
     return render_template('add_plant.html')
 
 if __name__ == '__main__':

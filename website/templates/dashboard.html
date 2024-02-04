@@ -99,9 +99,17 @@
 
                         {% if request.cookies.get('username') %}
                         <h5 class="card-title">Crop Life Statistics</h5>
+<<<<<<< HEAD
 
                         {% else %}
                         <h5 class="card-title">Crop Life Statistics</h5>
+=======
+                        <p class="card-title">Planted : {{ request.cookies.get('crop_planted') }}</p>
+                        <p class="card-title">Harvested : {{ request.cookies.get('crop_harvested') }}</p>
+                        
+                    {% else %}
+                    <h5 class="card-title">Crop Life Statistics</h5>
+>>>>>>> 39d45b3 (Cards_new)
                         <p class="card-text">Login to view your crop statistics</p>
                         {% endif %}
 
