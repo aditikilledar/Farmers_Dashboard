@@ -1,0 +1,127 @@
+<!-- templates/weather_page.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f0f0; /* Use your preferred color code or name */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- <a class="navbar-brand" href="#">Your Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sign up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/ask"> Crop Advisor</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Weather</h5>
+                        <!-- <p class="card-text">This is the content of Card 1.</p> -->
+                        <form method="post" action="{{ url_for('weather_dashboard.get_weather') }}">
+                            <label for="city">Enter City:</label>
+                            <input type="text" id="city" name="city" required>
+                            <button type="Search">Search</button>
+                        </form>
+                        <div>
+                            {% if city %}
+                                <p>Weather in {{city}}</p>
+                                <p>Temperature: {{(temperature - 273)| round(2)}}°C</p>
+                                <p>Description: {{description}}</p> 
+                                <img src="http://openweathermap.org/img/wn/{{ icon }}.png" alt="Weather Icon">
+                            {% endif %}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Card 2</h5>
+                        <p class="card-text">This is the content of Card 2.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional, if you need features like the collapse navbar) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Page</title> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    
+    <!-- Include FontAwesome CSS -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> -->
+    <!-- <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map { height: 400px; display: none; }
+    </style> -->
+    <!-- <style>
+        body {
+            background-color: #f0f0f0; /* Use your preferred color code or name */
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard Page</h1>
+    <form method="post" action="{{ url_for('weather_dashboard.get_weather') }}">
+        <label for="city">Enter City:</label>
+        <input type="text" id="city" name="city" required>
+        <button type="Search">Search</button>
+    </form>
+ -->
+    <!-- <div id="map"></div> -->
+    <!-- {% if city %}
+        <p>Weather in {{city}}</p>
+        <p>Temperature: {{(temperature - 273)| round(2)}}°C</p>
+        <p>Description: {{description}}</p> 
+        <img src="http://openweathermap.org/img/wn/{{ icon }}.png" alt="Weather Icon">
+    {% endif %}
+
+</body>
+</html> -->
