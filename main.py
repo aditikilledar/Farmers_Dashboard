@@ -21,8 +21,8 @@ def ask():
     print(request)
 
     load_dotenv()
-
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    OPENAI_API_KEY="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"
+    client = OpenAI(api_key=OPENAI_API_KEY)
 
     completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
