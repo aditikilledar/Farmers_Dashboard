@@ -1,5 +1,6 @@
 from website import create_app
-from flask import Blueprint, render_template, request, jsonify, json, redirect, flash, url_for, session
+import requests
+from flask import Blueprint, render_template, request, jsonify, json, redirect, flash, url_for, sessions
 from geopy.geocoders import Nominatim
 from flask_pymongo import PyMongo
 from openai import OpenAI
@@ -9,6 +10,9 @@ from dotenv import load_dotenv
 app = create_app()
 app.config['MONGO_URI'] = "mongodb+srv://newuser:newmongouser@cluster0.zxhpmba.mongodb.net/db?retryWrites=true&w=majority"
 mongo = PyMongo(app)
+
+API_KEY = '4c1d64bec949b1fedecc27ffe4970435'
+BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
 @app.route('/ask',methods=['POST'])
 def ask():
@@ -35,6 +39,30 @@ def ask():
     # print()
     # response = app.response_class(response=json.dumps(completion.choices[0].message.content),status=200, minetype='application/json')
     return jsonify({"message":completion.choices[0].message.content, 'status':200})
+
+
+# @weather_dashboard.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
+def get_weather():
+    if request.method == 'POST':
+        city = request.form.get('city')
+        if city:
+            params = {'q': city, 'appid': API_KEY}
+            response = requests.get(BASE_URL, params=params)
+            weather_data = response.json()
+
+            if response.status_code == 200:
+                # print(weather_data)
+                temperature = weather_data['main']['temp']
+                icon = weather_data['weather'][0]['icon']
+                description = weather_data['weather'][0]['description']
+                print(icon)
+                return render_template('dashboard.html', city=city, temperature=temperature, description=description, icon=icon)
+            else:
+                error_message = f"Error: {weather_data['message']}"
+                return render_template('dashboard.html', error_message=error_message, city=city)
+
+    return render_template('dashboard.html', city=None)
 
 
 @app.route('/login')
