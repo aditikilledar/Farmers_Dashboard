@@ -11,8 +11,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f0f0;
+            background-color: #D4E7C5;
             /* Use your preferred color code or name */
+        }
+
+        .navbar-custom {
+            background-color: #99BC85;
+            /* Change this to the desired color */
         }
     </style>
 </head>
@@ -20,31 +25,31 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container">
-            <!-- <a class="navbar-brand" href="#">Your Logo</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="/">Farmer's Buddy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button> -->
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Login</a>
+                        <a class="nav-link" href="/login">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Sign up</a>
+                        <a class="nav-link" href="/signup">Sign up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/ask"> Crop Advisor</a>
+                        <a class="nav-link" href="/ask">Crop Advisor</a>
                     </li>
-
                 </ul>
             </div>
         </div>
     </nav>
-
     <!-- Main Content -->
-    <div class="container mt-4">
+    <!-- div class="d-flex justify-content-center"-->
+    <div class="container mt-4 justify-content-center">
         <div class="row">
             <!-- Card 1 -->
             <div class="col-md-6 mb-4">
@@ -57,6 +62,7 @@
                             <input type="text" id="city" name="city" required>
                             <button type="Search">Search</button>
                         </form>
+                        <br>
                         <div>
                             {% if city %}
                             <p>Weather in {{city}}</p>
@@ -81,7 +87,7 @@
             </div>
         </div>
         <!-- Row 2>
-        <div class="row"-->
+            <div class="row"-->
         <!-- Card 1 -->
         <div class="row">
             <!-- Card 1 -->
@@ -108,19 +114,51 @@
                 </div>
             </div>
 
-            <!-- Card 2 -->
+            <!-- Card 4 -->
             <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Chatbot</h5>
                         <p class="card-text">chat assistance for specific questions</p>
+                        <form id="chatQuestionForm">
+                            <input type="text" id="chat" name="chat">
+                            <button type="submit">Ask</button>
+                        </form>
+                        <br>
+                        <div id="response"></div>
+                        <script>
+                            document.getElementById('chatQuestionForm').addEventListener('submit', function (event) {
+                                event.preventDefault();
+                                var formData = new FormData(this);
+                                var chatqn = formData.get('chat');
+                                // var question = `I have the ${soil} soil type, it's ${season} season, in ${location}. Based on the above data, which ONE crop should I plant Output format is CROP_NAME`;
+
+                                fetch('/ask', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ question: chatqn })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        // Extracting content from the response
+                                        const content = data.message.trim();
+
+                                        // Update the answer element with the extracted content
+                                        document.getElementById('response').innerText = content;
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                    });
+                            })
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     </div>
-
     <!-- Bootstrap JS (Optional, if you need features like the collapse navbar) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
