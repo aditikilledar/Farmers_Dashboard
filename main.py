@@ -75,7 +75,7 @@ def login():
         user = mongo.db.users.find_one({'username': username})
 
         if user and password=="Qwerty@12345":
-            session['username'] = username
+            sessions['username'] = username
             return redirect(url_for('home'))
         else:
             return 'Invalid username or password'
