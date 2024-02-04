@@ -4,55 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find the Crop</title>
+    <title>Navbar with Card</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #D4E7C5;
+            /* Use your preferred color code or name */
+        }
+
+        .navbar-custom {
+            background-color: #99BC85;
+            /* Change this to the desired color */
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Ask ChatGPT</h1>
-    <form id="questionForm">
-        <label for="soil">Soil:</label><br>
-        <input type="text" id="soil" name="soil"><br>
-        <label for="season">Season:</label><br>
-        <input type="text" id="season" name="season"><br>
-        <label for="location">Location:</label><br>
-        <input type="text" id="location" name="location"><br>
-        <label for="weather">Weather:</label><br>
-        <input type="text" id="weather" name="weather"><br>
-        <button type="submit">Ask</button>
-    </form>
-    <br>
-    <div id="answer"> hiiiii im ans</div>
 
-    <script>
-        document.getElementById('questionForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-            var soil = formData.get('soil');
-            var season = formData.get('season');
-            var location = formData.get('location');
-            var weather = formData.get('weather');
-            var question = `I have the ${soil} soil type, it's ${season} season, in ${location}. Based on the above data, which ONE crop should I plant Output format is CROP_NAME`;
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">Farmer's Buddy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">Sign up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ask">Crop Advisor</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-            fetch('/ask', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ question: question })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Extracting content from the response
-                    const content = data.message.trim();
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Card Title</h5>
+                <p class="card-text">This is some sample text within a card. You can customize this content as needed.
+                </p>
+            </div>
+        </div>
+    </div>
 
-                    // Update the answer element with the extracted content
-                    document.getElementById('answer').innerText = content;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        })
-    </script>
+    <!-- Bootstrap JS (Optional, if you need features like the collapse navbar) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

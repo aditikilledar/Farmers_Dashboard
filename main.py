@@ -18,18 +18,42 @@ BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 def ask():
     # Get the question from the request
     question = request.json.get('question')
+    rules = request.json.get('rules')
     print(request)
 
     load_dotenv()
 
-    client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-    )
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
     completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
         {"role": "system", "content": "You are a farming expert, skilled in advising new farmers on what crops to plant based on environment conditions. You only answer in vegetable names."},
+        {"role": "user", "content": question}
+    ]
+    )
+
+    print(completion.choices[0].message.content)
+    
+    # print()
+    # response = app.response_class(response=json.dumps(completion.choices[0].message.content),status=200, minetype='application/json')
+    return jsonify({"message":completion.choices[0].message.content, 'status':200})
+
+@app.route('/askchat',methods=['POST'])
+def askchat():
+    # Get the question from the request
+    question = request.json.get('question')
+    rules = request.json.get('rules')
+    print(request)
+
+    load_dotenv()
+
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You are a farming expert, skilled at advising and answering questions of users who are new in farming domain. Answer questions only related to farming and refrain from answering any other type of questions. Use simple terms to explain. Don't repond more than 100 words."},
         {"role": "user", "content": question}
     ]
     )
