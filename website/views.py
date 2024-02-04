@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, json
 from geopy.geocoders import Nominatim
-import openai
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
 
 views = Blueprint('views', __name__)
 @views.route('/')
@@ -10,33 +12,4 @@ def home():
 
 @views.route('/ask')
 def abc():
-    return render_template("cropProfile.html")  
-
-# @views.route('/ask', methods=['POST'])
-# def ask():
-#     return render_template("cropProfile.html")
-
-# @views.route('/ask1', methods=['POST'])
-# def ask1():
-#     # Get the question from the request
-#     question = request.json.get('question')
-
-#     if not question:
-#         return jsonify({'error': 'Question not provided'})
-
-#     try:
-#         # Call the OpenAI API to get the response
-#         response = openai.Completion.create(
-#             engine="davinci",
-#             prompt=question,
-#             max_tokens=100
-#         )
-        
-#         # Parse the response
-#         answer = response.choices[0].text.strip()
-
-#         # Send the response back
-#         return jsonify({'answer': answer})
-
-#     except Exception as e:
-#         return jsonify({'error': str(e)})
+    return render_template("crop.html")  
