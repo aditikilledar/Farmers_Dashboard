@@ -34,15 +34,28 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
+                    {% if request.cookies.get('username') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
                         <a class="nav-link" href="/login">Login</a>
                     </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="/signup">Sign up</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/ask">Crop Manager</a>
                     </li>
+                    {% if request.cookies.get('username') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/add_plant">Manage plant</a>
+                    </li>
+                {% endif %}
+                    
                 </ul>
             </div>
         </div>
@@ -80,8 +93,15 @@
             <div class="col-md-6 mb-4">
                 <div class="card">
                     <div class="card-body">
+
+                        {% if request.cookies.get('username') %}
                         <h5 class="card-title">Crop Life Statistics</h5>
-                        <p class="card-text">It has 2 cards num of crops harvested, number planted</p>
+                        
+                    {% else %}
+                    <h5 class="card-title">Crop Life Statistics</h5>
+                        <p class="card-text">Login to view your crop statistics</p>
+                    {% endif %}
+                        
                     </div>
                 </div>
             </div>

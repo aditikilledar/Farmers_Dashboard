@@ -1,6 +1,6 @@
 from website import create_app
 import requests
-from flask import Blueprint, render_template, request, jsonify, json, redirect, flash, url_for, sessions
+from flask import Blueprint, render_template, request, jsonify, json, redirect, flash, url_for, sessions, make_response
 from geopy.geocoders import Nominatim
 from flask_pymongo import PyMongo
 from openai import OpenAI
@@ -75,6 +75,9 @@ def get_weather():
             response = requests.get(BASE_URL, params=params)
             weather_data = response.json()
 
+            username = request.cookies.get('username')
+            user = mongo.db.users.find_one({'username': username})
+            
             if response.status_code == 200:
                 # print(weather_data)
                 temperature = weather_data['main']['temp']
@@ -89,7 +92,7 @@ def get_weather():
     return render_template('dashboard.html', city=None)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -97,13 +100,27 @@ def login():
 
         # Check if username exists in MongoDB
         user = mongo.db.users.find_one({'username': username})
+        if user and password == user['password']:
+            # Create a response object
+            response = make_response(redirect(url_for('get_weather')))
 
-        if user and password=="Qwerty@12345":
-            sessions['username'] = username
-            return redirect(url_for('home'))
+            # Set a custom cookie with the username
+            response.set_cookie('username', username)
+            print(f"Cookie set for username: {username}")
+            return response
         else:
             return 'Invalid username or password'
+
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    response = make_response(redirect(url_for('get_weather')))
+
+    # Delete the 'username' cookie
+    response.delete_cookie('username')
+
+    return response
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -115,13 +132,33 @@ def signup():
         if mongo.db.users.find_one({'username': username}):
             return 'Username already exists. Please choose a different one.'
 
-        hashed_password = "Qwerty@12345"
-
         # Insert new user into MongoDB
-        mongo.db.users.insert_one({'username': username, 'password': hashed_password})
+        mongo.db.users.insert_one({'username': username, 'password': password})
 
         return redirect(url_for('login'))
     return render_template('signup.html')
+
+@app.route('/add_plant', methods=['GET', 'POST'])
+def add_plant():
+    if request.method == 'POST':
+
+        username = request.cookies.get('username')
+        mongo.db.users.update_one({'username': username}, {'$inc': {'crop_planted': 1}}, upsert=True)
+
+
+        return redirect(url_for('get_weather'))
+    return render_template('add_plant.html')
+
+@app.route('/harvest_crops', methods=['GET', 'POST'])
+def harvest_crops():
+    if request.method == 'POST':
+
+        username = request.cookies.get('username')
+        mongo.db.users.update_one({'username': username}, {'$inc': {'crop_harvested': 1}}, upsert=True)
+
+
+        return redirect(url_for('get_weather'))
+    return render_template('add_plant.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
