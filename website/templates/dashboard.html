@@ -19,6 +19,21 @@
             background-color: #99BC85;
             /* Change this to the desired color */
         }
+
+        .container {
+            overflow: hidden;
+            /* Clear the float */
+        }
+
+        .left-div {
+            float: left;
+            width: 50%;
+        }
+
+        .right-div {
+            float: left;
+            width: 50%;
+        }
     </style>
 </head>
 
@@ -69,7 +84,7 @@
         <div class="row">
             <!-- Card 1 -->
             <div class="col-md-6 mb-4">
-                <div class="card">
+                <div class="card" style="height:100%; border-radius:25px">
                     <div class="card-body">
                         <h5 class="card-title">Weather</h5>
                         <!-- <p class="card-text">This is the content of Card 1.</p> -->
@@ -81,10 +96,16 @@
                         <br>
                         <div>
                             {% if city %}
-                            <p>Weather in {{city}}</p>
-                            <p>Temperature: {{(temperature - 273)| round(2)}}°C</p>
-                            <p>Description: {{description}}</p>
-                            <img src="http://openweathermap.org/img/wn/{{ icon }}.png" alt="Weather Icon">
+                            <div class="left-div">
+                                <p>Weather in {{city}}</p>
+                                <p>Temperature: {{(temperature - 273)| round(2)}}°C</p>
+                                <p>Description: {{description}}</p>
+                            </div>
+                            <div class="right-div">
+                                <img src="http://openweathermap.org/img/wn/{{ icon }}.png" alt="Weather Icon"
+                                    style="width:60%; height:60%">
+                            </div>
+
                             {% endif %}
                         </div>
 
@@ -94,22 +115,17 @@
 
             <!-- Card 2 -->
             <div class="col-md-6 mb-4">
-                <div class="card">
+                <div class="card" style="height:100%; border-radius:25px">
                     <div class="card-body">
 
                         {% if request.cookies.get('username') %}
                         <h5 class="card-title">Crop Life Statistics</h5>
-<<<<<<< HEAD
+
+                        <p class="card-title">Planted : {{ request.cookies.get('crop_planted') }}</p>
+                        <p class="card-title">Harvested : {{ request.cookies.get('crop_harvested') }}</p>
 
                         {% else %}
                         <h5 class="card-title">Crop Life Statistics</h5>
-=======
-                        <p class="card-title">Planted : {{ request.cookies.get('crop_planted') }}</p>
-                        <p class="card-title">Harvested : {{ request.cookies.get('crop_harvested') }}</p>
-                        
-                    {% else %}
-                    <h5 class="card-title">Crop Life Statistics</h5>
->>>>>>> 39d45b3 (Cards_new)
                         <p class="card-text">Login to view your crop statistics</p>
                         {% endif %}
 
@@ -123,24 +139,27 @@
         <div class="row">
             <!-- Card 1 -->
             <div class="col-md-6 mb-4">
-                <div class="card">
+                <div class="card" style="height:100%; border-radius:25px">
                     <div class="card-body">
                         <h5 class="card-title">Crop Recommendation</h5>
                         <p class="card-text"> Find a crop that suits your custom environmental conditions. Enter the
                             information below. </p>
-                        <form id="questionForm">
-                            <label for="soil">Soil:</label><br>
-                            <input type="text" id="soil" name="soil"><br>
-                            <label for="season">Season:</label><br>
-                            <input type="text" id="season" name="season"><br>
-                            <label for="location">Location:</label><br>
-                            <input type="text" id="location" name="location"><br>
-                            <label for="weather">Weather:</label><br>
-                            <input type="text" id="weather" name="weather"><br>
-                            <button type="submit">Ask</button>
-                        </form>
+                        <div class="left-div">
+                            <form id="questionForm">
+                                <label for="soil">Soil:</label><br>
+                                <input type="text" id="soil" name="soil"><br>
+                                <label for="season">Season:</label><br>
+                                <input type="text" id="season" name="season"><br>
+                                <label for="location">Location:</label><br>
+                                <input type="text" id="location" name="location"><br>
+                                <label for="weather">Weather:</label><br>
+                                <input type="text" id="weather" name="weather"><br>
+                                <button type="submit">Ask</button>
+                            </form>
+                        </div>
+
                         <br>
-                        <div id="answer"> </div>
+                        <div id="answer" class="right-div" style="overflow: auto"> </div>
 
                     </div>
                 </div>
@@ -148,7 +167,7 @@
 
             <!-- Card 4 -->
             <div class="col-md-6 mb-4">
-                <div class="card">
+                <div class="card" style="height:100%; border-radius:25px">
                     <div class="card-body">
                         <h5 class="card-title">CropBot</h5>
                         <p class="card-text">If you have specific questions about the lifecycle of your crops, ask
@@ -158,7 +177,7 @@
                             <button type="submit">Ask</button>
                         </form>
                         <br>
-                        <div id="response"></div>
+                        <div id="response" style="overflow: auto"></div>
                         <script>
                             document.getElementById('chatQuestionForm').addEventListener('submit', function (event) {
                                 event.preventDefault();

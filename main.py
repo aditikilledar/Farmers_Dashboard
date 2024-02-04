@@ -8,7 +8,7 @@ import os
 from dotenv import load_dotenv
 
 app = create_app()
-app.config['MONGO_URI'] = "mongodb+srv://newuser:newmongouser@cluster0.zxhpmba.mongodb.net/db?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = "mongodb+srv://herokurosakii:mern1234@cluster0.uer66qo.mongodb.net/db?retryWrites=true&w=majority"
 mongo = PyMongo(app)
 
 API_KEY = '4c1d64bec949b1fedecc27ffe4970435'
@@ -18,7 +18,6 @@ BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 def ask():
     # Get the question from the request
     question = request.json.get('question')
-    rules = request.json.get('rules')
     print(request)
 
     load_dotenv()
