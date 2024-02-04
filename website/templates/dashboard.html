@@ -25,6 +25,7 @@
 <body>
 
     <!-- Navbar -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="/">Farmer's Buddy</a>
@@ -34,6 +35,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Dashboard</a>
+                    </li>
                     {% if request.cookies.get('username') %}
                     <li class="nav-item">
                         <a class="nav-link" href="/logout">Logout</a>
@@ -47,19 +51,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/signup">Sign up</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/ask">Crop Manager</a>
-                    </li>
                     {% if request.cookies.get('username') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/add_plant">Manage plant</a>
+                        <a class="nav-link" href="/add_plant">Crop Manager</a>
                     </li>
-                {% endif %}
-                    
+                    {% endif %}
+
                 </ul>
             </div>
         </div>
     </nav>
+
+
     <!-- Main Content -->
     <!-- div class="d-flex justify-content-center"-->
     <div class="container mt-4 justify-content-center">
@@ -96,12 +99,12 @@
 
                         {% if request.cookies.get('username') %}
                         <h5 class="card-title">Crop Life Statistics</h5>
-                        
-                    {% else %}
-                    <h5 class="card-title">Crop Life Statistics</h5>
+
+                        {% else %}
+                        <h5 class="card-title">Crop Life Statistics</h5>
                         <p class="card-text">Login to view your crop statistics</p>
-                    {% endif %}
-                        
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
