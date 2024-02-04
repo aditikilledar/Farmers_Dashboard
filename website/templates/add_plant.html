@@ -4,6 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #D4E7C5;
+            /* Use your preferred color code or name */
+        }
+
+        .navbar-custom {
+            background-color: #99BC85;
+            /* Change this to the desired color */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">Farmer's Buddy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Dashboard</a>
+                    </li>
+                    {% if request.cookies.get('username') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">Sign up</a>
+                    </li>
+                    {% if request.cookies.get('username') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/add_plant">Crop Manager</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <h1>Manage Plants</h1>
+
+    <h4>Planted crops</h4>
+    <!-- Form for adding plants -->
+    <form method="post" action="{{ url_for('add_plant') }}">
+        <label for="plant">Crop planted:</label>
+        <input type="text" id="plant" name="plant" required>
+        <br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required>
+        <br>
+        <input type="submit" value="Add Plant">
+    </form>
+    <br>
+    <h4>Harvested crops</h4>
+    <!-- Form for harvesting crops -->
+    <form method="post" action="{{ url_for('harvest_crops') }}">
+        <label for="harvested_crop">Harvested Crop:</label>
+        <input type="text" id="harvested_crop" name="harvested_crop" required>
+        <br>
+        <label for="harvested_quantity">Harvested Quantity:</label>
+        <input type="number" id="harvested_quantity" name="harvested_quantity" required>
+        <br>
+        <input type="submit" value="Harvest Crops">
+    </form>
+    </div>
+
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Plants</title>
 </head>
 
