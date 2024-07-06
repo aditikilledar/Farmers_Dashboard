@@ -8,8 +8,7 @@ Farmer's buddy is a dashboard that helps new farmers get information on crop pre
 - MongoDB
 - OpenAI API
 - Openweather API
-- HTML/CSS/JS
-
+- HTML/CSS/JSS
 
 ## Enhancements
 - Better UI
@@ -20,3 +19,11 @@ Farmer's buddy is a dashboard that helps new farmers get information on crop pre
 ## Demo
 
 Demo Video -> [https://www.youtube.com/watch?v=_U1jPdK03tM]
+
+## TODO
+
+- [ ] User-specific Profile after being Logged In
+- [ ] Check database fields
+- [ ] Login Page
+- [ ] Migrate Frontend to React
+- [ ] (optional) Migrate to Django / FastAI backend
