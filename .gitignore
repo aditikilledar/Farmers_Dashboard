@@ -19,8 +19,8 @@ DS_Store
 .vscode/
 .idea/
 *.iml
-*/.pyc
-__pycache__/
+*.pyc
+**/__pycache__/
 
 # Node Files
 node_modules

@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 from urllib.parse import quote_plus
+# from flask_cors import CORS
 
 # load config from .env file
 load_dotenv()
@@ -20,6 +21,7 @@ db = client[db_name]
 #db.create_collection("users", capped=False)
 
 api = Blueprint('api', __name__)
+# CORS(api)
 
 @api.route('/', methods=['GET'])
 def get_all_users():
