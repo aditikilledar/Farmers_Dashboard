@@ -9,6 +9,11 @@ include/
 lib/
 lib64/
 pip-selfcheck.json
+*.pyc
+
+.DS_Store
+env
+DS_Store
 
 # IDE files
 .vscode/
@@ -16,3 +21,6 @@ pip-selfcheck.json
 *.iml
 */.pyc
 __pycache__/
+
+# Node Files
+node_modules
