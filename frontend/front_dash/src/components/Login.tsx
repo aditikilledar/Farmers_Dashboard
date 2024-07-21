@@ -16,9 +16,10 @@ const Login: React.FC = () => {
 
         // do all the items after being logged in like calling backend API
         console.log("Logged in with", { email, password });
+
+        // On successful login
+        navigate('/weather');
     };
-
-
 
     // return the frontend
     return (
@@ -44,7 +45,7 @@ const Login: React.FC = () => {
                 </div>
             </div>
         </div>
-        
+
     );
 
 };
