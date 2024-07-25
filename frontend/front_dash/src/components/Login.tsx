@@ -40,7 +40,7 @@ const Login: React.FC = () => {
                     </form>
 
                 </div>
-                <div>
+                <div style={{marginTop:"15px"}}>
                     <h3>Not a user? <button onClick={navigateToSignup}> Create user </button></h3>
                 </div>
             </div>
